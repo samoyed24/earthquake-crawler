@@ -2,7 +2,7 @@ package spider
 
 import (
 	"fmt"
-	"japan-earthquake-webspider/config"
+	"japan-earthquake-webspider/internal/config"
 	"net/http"
 	"time"
 

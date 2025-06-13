@@ -3,9 +3,9 @@ package storage
 import (
 	"database/sql"
 	"fmt"
-	"japan-earthquake-webspider/config"
+	"japan-earthquake-webspider/internal/config"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 var db *sql.DB
@@ -26,7 +26,7 @@ func initDB() error {
 }
 
 func LoadDB() error {
-	_db, err := sql.Open("sqlite3", config.Cfg.DB.DBPath)
+	_db, err := sql.Open("sqlite", config.Cfg.DB.DBPath)
 	if err != nil {
 		return err
 	}

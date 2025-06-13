@@ -1,7 +1,7 @@
 package app
 
 import (
-	"japan-earthquake-webspider/config"
+	"japan-earthquake-webspider/internal/config"
 	"japan-earthquake-webspider/internal/task"
 	"time"
 
