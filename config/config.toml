@@ -1,5 +1,11 @@
 [httpRequest]
-timeout_second = 5                  # 爬虫的超时时间
+timeout_second = 5                          # 爬虫的超时时间
 
 [db]
-db_path = "./earthquake.db"       # SQLite数据库位置
+db_path = "./earthquake.db"                 # SQLite数据库位置
+
+[crawlerSwitch]
+japan_earthquake_crawler_switch = true      # 日本地震信息爬虫开/关
+
+[crawlerInterval]
+japan_earthquake_interval = 60              # 日本地震信息爬虫运行间隔（秒）

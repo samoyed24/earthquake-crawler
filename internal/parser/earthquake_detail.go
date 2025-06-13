@@ -59,13 +59,13 @@ func getLocationFromLocationTable(tableSelection *goquery.Selection, detailStruc
 	if tableSelection.Length() == 0 { // 有一些地震，并没有影响到日本国内，但是仍然会报，这时表格长度为0
 		return nil
 	}
-	trs := tableSelection.Find("tbody tr")
+	trs := tableSelection.ChildrenFiltered("tbody").ChildrenFiltered("tr")
 	trs.Each(func(i int, rowSelection *goquery.Selection) {
 		locationReport := new(model.LocationReport)
 		locationReport.Intensity = strings.TrimSpace(rowSelection.Find("td").Eq(0).Find("small").First().Text())
 		rowSelection.Find("td").Eq(1).Find("table tbody tr").Each(func(i int, s *goquery.Selection) {
 			location := new(model.Location)
-			location.Prefecture = s.Find("td").Eq(0).Find("small").First().Text()
+			location.Prefecture = strings.TrimSpace(s.Find("td").Eq(0).Find("small").First().Text())
 			location.Subareas = splitLocations(s.Find("td").Eq(1).Find("small").First().Text())
 			if len(location.Subareas) > 0 {
 				locationReport.Locations = append(locationReport.Locations, *location)
