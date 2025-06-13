@@ -1,0 +1,5 @@
+[httpRequest]
+timeout_second = 5                  # 爬虫的超时时间
+
+[db]
+db_path = "./earthquake.db"       # SQLite数据库位置
