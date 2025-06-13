@@ -17,8 +17,7 @@ func main() {
 		log.Fatalf("在读取数据库的过程中发生错误：%v", err)
 	}
 	log.Info("数据库读取成功")
-	if err := app.RunEarthquakeListSpider(); err != nil {
+	if err := app.RunApp(); err != nil {
 		log.Fatalf("爬虫程序运行失败：%v", err)
 	}
-	// log.Info("爬虫程序开始运行")
 }
