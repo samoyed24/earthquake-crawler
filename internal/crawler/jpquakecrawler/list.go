@@ -1,4 +1,4 @@
-package spider
+package jpquakecrawler
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func GetEarthquakeListDoc() (*goquery.Document, error) {
+func GetJapanEarthquakeListDoc() (*goquery.Document, error) {
 	client := &http.Client{ // 超时时间
 		Timeout: 5 * time.Second,
 	}

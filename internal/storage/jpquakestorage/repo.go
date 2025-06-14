@@ -1,13 +1,14 @@
-package storage
+package jpquakestorage
 
 import (
+	"earthquake-crawler/internal/model"
+	"earthquake-crawler/internal/storage"
 	"encoding/json"
 	"fmt"
-	"japan-earthquake-webspider/internal/model"
 )
 
-func GetEarthquakeNotInDB(earthquakeList []string) ([]string, error) {
-	if db == nil {
+func GetJapanEarthquakeNotInDB(earthquakeList []string) ([]string, error) {
+	if storage.DB == nil {
 		return nil, fmt.Errorf("数据库未初始化")
 	}
 	querySQL := "SELECT earthquake_time FROM japan_earthquake_records WHERE earthquake_time IN (?"
@@ -19,7 +20,7 @@ func GetEarthquakeNotInDB(earthquakeList []string) ([]string, error) {
 	for i, v := range earthquakeList {
 		args[i] = v
 	}
-	rows, err := db.Query(querySQL, args...)
+	rows, err := storage.DB.Query(querySQL, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,8 +48,8 @@ func GetEarthquakeNotInDB(earthquakeList []string) ([]string, error) {
 	return resultList, nil
 }
 
-func AddNewEarthquake(earthquakeDetail *model.EarthquakeDetail) error {
-	if db == nil {
+func AddNewJapanEarthquake(earthquakeDetail *model.JapanEarthquakeDetail) error {
+	if storage.DB == nil {
 		return fmt.Errorf("数据库未初始化")
 	}
 	insertSQL := "INSERT INTO japan_earthquake_records (earthquake_time, earthquake_detail) VALUES (?, ?)"
@@ -57,7 +58,7 @@ func AddNewEarthquake(earthquakeDetail *model.EarthquakeDetail) error {
 		return err
 	}
 
-	_, err = db.Exec(insertSQL, earthquakeDetail.EarthquakeTime, string(jsonBytes))
+	_, err = storage.DB.Exec(insertSQL, earthquakeDetail.EarthquakeTime, string(jsonBytes))
 	if err != nil {
 		return err
 	}

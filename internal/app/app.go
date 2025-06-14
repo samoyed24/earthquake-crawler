@@ -1,8 +1,8 @@
 package app
 
 import (
-	"japan-earthquake-webspider/internal/config"
-	"japan-earthquake-webspider/internal/task"
+	"earthquake-crawler/internal/config"
+	"earthquake-crawler/internal/task"
 	"time"
 
 	"github.com/sirupsen/logrus"

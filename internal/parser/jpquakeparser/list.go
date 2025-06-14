@@ -1,4 +1,4 @@
-package parser
+package jpquakeparser
 
 import (
 	"regexp"
@@ -6,7 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func ParseEarthquakeListDoc(doc *goquery.Document) ([]string, error) {
+func ParseJapanEarthquakeListDoc(doc *goquery.Document) ([]string, error) {
 	var earthquakeIndex []string
 	doc.Find("#eqhist table tr").Each(func(i int, s *goquery.Selection) {
 		if i == 0 {

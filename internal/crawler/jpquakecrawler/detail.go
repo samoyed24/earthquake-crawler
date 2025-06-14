@@ -1,15 +1,15 @@
-package spider
+package jpquakecrawler
 
 import (
+	"earthquake-crawler/internal/config"
 	"fmt"
-	"japan-earthquake-webspider/internal/config"
 	"net/http"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
-func GetEarthquakeDetailDoc(eqTime string) (*goquery.Document, error) {
+func GetJapanEarthquakeDetailDoc(eqTime string) (*goquery.Document, error) {
 	client := &http.Client{
 		Timeout: time.Duration(config.Cfg.HttpRequest.TimeoutSeconds) * time.Second,
 	}
