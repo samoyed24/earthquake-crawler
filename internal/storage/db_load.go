@@ -2,13 +2,13 @@ package storage
 
 import (
 	"database/sql"
+	"earthquake-crawler/internal/config"
 	"fmt"
-	"japan-earthquake-webspider/internal/config"
 
 	_ "modernc.org/sqlite"
 )
 
-var db *sql.DB
+var DB *sql.DB
 
 func initDB() error {
 	createJapanEarthquakeTableSQL := `
@@ -18,7 +18,7 @@ func initDB() error {
 			earthquake_detail TEXT NOT NULL
 		)
 	`
-	_, err := db.Exec(createJapanEarthquakeTableSQL)
+	_, err := DB.Exec(createJapanEarthquakeTableSQL)
 	if err != nil {
 		return err
 	}
@@ -30,7 +30,7 @@ func LoadDB() error {
 	if err != nil {
 		return err
 	}
-	db = _db
+	DB = _db
 
 	if err := initDB(); err != nil {
 		return fmt.Errorf("在初始化数据库的过程中发生错误: %v", err)

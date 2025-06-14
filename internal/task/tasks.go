@@ -1,26 +1,26 @@
 package task
 
 import (
+	japanSpider "earthquake-crawler/internal/crawler/jpquakecrawler"
+	japanParser "earthquake-crawler/internal/parser/jpquakeparser"
+	japanStorage "earthquake-crawler/internal/storage/jpquakestorage"
 	"fmt"
-	"japan-earthquake-webspider/internal/parser"
-	"japan-earthquake-webspider/internal/spider"
-	"japan-earthquake-webspider/internal/storage"
 
 	"github.com/sirupsen/logrus"
 )
 
 func JapanEarthquakeCrawlTask() error {
-	eqListDoc, err := spider.GetEarthquakeListDoc()
+	eqListDoc, err := japanSpider.GetJapanEarthquakeListDoc()
 	if err != nil {
 		return fmt.Errorf("在获取日本地震信息列表的过程中失败: %v", err)
 	}
 
-	eqList, err := parser.ParseEarthquakeListDoc(eqListDoc)
+	eqList, err := japanParser.ParseJapanEarthquakeListDoc(eqListDoc)
 	if err != nil {
 		return fmt.Errorf("在解析日本地震列表HTML的过程中失败: %v", err)
 	}
 
-	eqNotExist, err := storage.GetEarthquakeNotInDB(eqList)
+	eqNotExist, err := japanStorage.GetJapanEarthquakeNotInDB(eqList)
 	if err != nil {
 		return fmt.Errorf("在查询数据库选择需要获取详情的日本地震列表的过程中失败：%v", err)
 	}
@@ -30,17 +30,17 @@ func JapanEarthquakeCrawlTask() error {
 	}
 
 	for _, eqTime := range eqNotExist {
-		doc, err := spider.GetEarthquakeDetailDoc(eqTime)
+		doc, err := japanSpider.GetJapanEarthquakeDetailDoc(eqTime)
 		if err != nil {
 			logrus.Errorf("在尝试获取%v发生的日本地震的过程中出现错误: %v", eqTime, err)
 			continue
 		}
-		detail, err := parser.ParseEarthquakeDetailDoc(eqTime, doc)
+		detail, err := japanParser.ParseJapanEarthquakeDetailDoc(eqTime, doc)
 		if err != nil {
 			logrus.Errorf("在尝试解析%v发生的日本地震的过程中出现错误：%v", eqTime, err)
 			continue
 		}
-		err = storage.AddNewEarthquake(detail)
+		err = japanStorage.AddNewJapanEarthquake(detail)
 		if err != nil {
 			return err
 		}

@@ -1,8 +1,8 @@
-package parser
+package jpquakeparser
 
 import (
+	"earthquake-crawler/internal/model"
 	"fmt"
-	"japan-earthquake-webspider/internal/model"
 	"strconv"
 	"strings"
 	"time"
@@ -23,15 +23,17 @@ func splitLocations(locationsString string) []string {
 	return strings.Fields(trimmedString)
 }
 
-func getDetailFromDetailTable(tableSelection *goquery.Selection, detailStruct *model.EarthquakeDetail) error {
+func getDetailFromDetailTable(tableSelection *goquery.Selection, detailStruct *model.JapanEarthquakeDetail) error {
 	trs := tableSelection.Find("tbody tr")
 	timeLayout := "2006年1月2日 15時04分ごろ"
 	occurTimeTr := trs.Eq(0).Find("td").Eq(1).Find("small").First().Text()
-	t, err := time.Parse(timeLayout, occurTimeTr)
+	loc, _ := time.LoadLocation("Asia/Tokyo")
+	t, err := time.ParseInLocation(timeLayout, occurTimeTr, loc)
 	if err != nil {
 		return err
 	}
-	detailStruct.OccurTime = t.Format("2006-01-02T15:04:05Z09:00")
+	tTokyo := t.In(loc)
+	detailStruct.OccurTime = tTokyo.Format("2006-01-02T15:04:05-07:00")
 	detailStruct.Center = strings.TrimSpace(trs.Eq(1).Find("td").Eq(1).Find("small").First().Text())
 	detailStruct.MaxIntensity = strings.TrimSpace(trs.Eq(2).Find("td").Eq(1).Find("small").First().Text())
 	magnitude, err := strconv.ParseFloat(strings.TrimSpace(trs.Eq(3).Find("td").Eq(1).Find("small").First().Text()), 64)
@@ -55,7 +57,7 @@ func getDetailFromDetailTable(tableSelection *goquery.Selection, detailStruct *m
 	return nil
 }
 
-func getLocationFromLocationTable(tableSelection *goquery.Selection, detailStruct *model.EarthquakeDetail) error {
+func getLocationFromLocationTable(tableSelection *goquery.Selection, detailStruct *model.JapanEarthquakeDetail) error {
 	if tableSelection.Length() == 0 { // 有一些地震，并没有影响到日本国内，但是仍然会报，这时表格长度为0
 		return nil
 	}
@@ -76,8 +78,8 @@ func getLocationFromLocationTable(tableSelection *goquery.Selection, detailStruc
 	return nil
 }
 
-func ParseEarthquakeDetailDoc(eqTime string, doc *goquery.Document) (*model.EarthquakeDetail, error) {
-	earthquakeDetail := new(model.EarthquakeDetail)
+func ParseJapanEarthquakeDetailDoc(eqTime string, doc *goquery.Document) (*model.JapanEarthquakeDetail, error) {
+	earthquakeDetail := new(model.JapanEarthquakeDetail)
 	earthquakeDetail.EarthquakeTime = eqTime
 	tables := doc.Find("#eqinfdtl table")
 	detailTable := tables.Eq(0)

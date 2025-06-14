@@ -1,9 +1,9 @@
 package main
 
 import (
-	"japan-earthquake-webspider/internal/app"
-	"japan-earthquake-webspider/internal/config"
-	"japan-earthquake-webspider/internal/storage"
+	"earthquake-crawler/internal/app"
+	"earthquake-crawler/internal/config"
+	"earthquake-crawler/internal/storage"
 
 	log "github.com/sirupsen/logrus"
 )

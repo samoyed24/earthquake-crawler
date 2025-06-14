@@ -10,7 +10,7 @@ type LocationReport struct {
 	Locations []Location `json:"locations"`
 }
 
-type EarthquakeDetail struct {
+type JapanEarthquakeDetail struct {
 	EarthquakeTime  string           `json:"earthquakeTime"` // 这个是存储原始时间，用于在查询时去重的
 	OccurTime       string           `json:"occurTime"`      // 这个存的是格式化后的ISO标准时间
 	Center          string           `json:"center"`

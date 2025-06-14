@@ -1,4 +1,4 @@
-module japan-earthquake-webspider
+module earthquake-crawler
 
 go 1.23.0
 
