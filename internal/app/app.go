@@ -21,7 +21,7 @@ func runTask(taskFunc func() error, interval time.Duration) {
 func RunApp() error {
 	logrus.Info("爬虫程序开始运行")
 	if config.Cfg.CrawlerSwitch.JapanEarthquakeCrawlerSwitch {
-		logrus.Infof("已添加日本地震信息爬虫任务，间隔%v秒执行", config.Cfg.CrawlerInterval.JapanEarthquakeInterval)
+		logrus.Infof("[日本气象厅地震信息]已添加爬虫任务，间隔%v秒执行", config.Cfg.CrawlerInterval.JapanEarthquakeInterval)
 		go runTask(task.JapanEarthquakeCrawlTask, time.Duration(config.Cfg.CrawlerInterval.JapanEarthquakeInterval)*time.Second)
 	}
 	select {}

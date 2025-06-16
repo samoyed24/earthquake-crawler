@@ -8,7 +8,7 @@ import (
 )
 
 func LoadConfig() error {
-	Path := "config/config.toml"
+	Path := "data/config.toml"
 	f, err := os.Open(Path)
 	if err != nil {
 		return err
