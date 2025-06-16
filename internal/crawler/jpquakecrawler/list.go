@@ -1,6 +1,7 @@
 package jpquakecrawler
 
 import (
+	"earthquake-crawler/internal/config"
 	"fmt"
 	"net/http"
 	"time"
@@ -9,8 +10,8 @@ import (
 )
 
 func GetJapanEarthquakeListDoc() (*goquery.Document, error) {
-	client := &http.Client{ // 超时时间
-		Timeout: 5 * time.Second,
+	client := &http.Client{
+		Timeout: time.Duration(config.Cfg.HttpRequest.TimeoutSeconds) * time.Second,
 	}
 	URL := "https://typhoon.yahoo.co.jp/weather/jp/earthquake/list/"
 	listRes, err := client.Get(URL)
