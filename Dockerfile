@@ -5,7 +5,6 @@ RUN apk add --no-cache tzdata
 
 FROM scratch
 
-COPY ./config/config.toml /config/config.toml
 COPY earthquake-crawler /app
 
 COPY --from=builder /dbfile /dbfile
