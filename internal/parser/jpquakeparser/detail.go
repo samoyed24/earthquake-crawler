@@ -35,12 +35,20 @@ func getDetailFromDetailTable(tableSelection *goquery.Selection, detailStruct *m
 	tTokyo := t.In(loc)
 	detailStruct.OccurTime = tTokyo.Format("2006-01-02T15:04:05-07:00")
 	detailStruct.Center = strings.TrimSpace(trs.Eq(1).Find("td").Eq(1).Find("small").First().Text())
-	detailStruct.MaxIntensity = strings.TrimSpace(trs.Eq(2).Find("td").Eq(1).Find("small").First().Text())
-	magnitude, err := strconv.ParseFloat(strings.TrimSpace(trs.Eq(3).Find("td").Eq(1).Find("small").First().Text()), 64)
-	if err != nil {
-		return err
+	maxInte := strings.TrimSpace(trs.Eq(2).Find("td").Eq(1).Find("small").First().Text())
+	if maxInte == "---" {
+		detailStruct.MaxIntensity = nil
+	} else {
+		detailStruct.MaxIntensity = &maxInte
 	}
-	detailStruct.Magnitude = magnitude
+	magnitude, err := strconv.ParseFloat(strings.TrimSpace(trs.Eq(3).Find("td").Eq(1).Find("small").First().Text()), 64)
+	var mag *float64
+	if err != nil { // 处理震级是"---"的情况，一般是火山喷发等特殊情况
+		mag = nil
+	} else {
+		mag = &magnitude
+	}
+	detailStruct.Magnitude = mag
 	detailStruct.Depth = strings.TrimSpace(trs.Eq(4).Find("td").Eq(1).Find("small").First().Text())
 
 	latitude, longitude, err := splitLatLon(trs.Eq(5).Find("td").Eq(1).Find("small").First().Text())
