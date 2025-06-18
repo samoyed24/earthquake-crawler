@@ -13,4 +13,4 @@ japan_eew_crawler_switch = true                 # 日本气象厅EEW爬虫开/�
 
 [crawlerInterval]
 japan_earthquake_interval = 60                  # 日本气象厅地震信息爬虫运行间隔（秒）
-japan_eew_interval = 1                          # 日本气象厅EEW爬虫运行间隔（秒）
+japan_eew_interval = 1                          # 日本气象厅EEW爬虫运行间隔（秒）（建议最好不要低于1秒）

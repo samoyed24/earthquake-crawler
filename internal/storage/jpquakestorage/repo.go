@@ -11,7 +11,7 @@ func GetJapanEarthquakeNotInDB(earthquakeList []string) ([]string, error) {
 	if storage.DB == nil {
 		return nil, fmt.Errorf("数据库未初始化")
 	}
-	querySQL := "SELECT earthquake_time FROM japan_earthquake_records WHERE earthquake_time IN (?"
+	querySQL := "SELECT earthquake_time FROM japan_earthquake_record WHERE earthquake_time IN (?"
 	for i := 1; i < len(earthquakeList); i++ {
 		querySQL += ",?"
 	}
@@ -44,7 +44,6 @@ func GetJapanEarthquakeNotInDB(earthquakeList []string) ([]string, error) {
 			resultList = append(resultList, val)
 		}
 	}
-
 	return resultList, nil
 }
 
@@ -52,7 +51,7 @@ func AddNewJapanEarthquake(earthquakeDetail *model.JapanEarthquakeDetail) error 
 	if storage.DB == nil {
 		return fmt.Errorf("数据库未初始化")
 	}
-	insertSQL := "INSERT INTO japan_earthquake_records (earthquake_time, earthquake_detail) VALUES (?, ?)"
+	insertSQL := "INSERT INTO japan_earthquake_record (earthquake_time, earthquake_detail) VALUES (?, ?)"
 	jsonBytes, err := json.Marshal(earthquakeDetail)
 	if err != nil {
 		return err
