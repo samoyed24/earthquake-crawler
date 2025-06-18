@@ -11,14 +11,11 @@ import (
 var DB *sql.DB
 
 func initDB() error {
-	createJapanEarthquakeTableSQL := `
-		CREATE TABLE IF NOT EXISTS japan_earthquake_records (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			earthquake_time TEXT NOT NULL UNIQUE,
-			earthquake_detail TEXT NOT NULL
-		)
-	`
-	_, err := DB.Exec(createJapanEarthquakeTableSQL)
+	err := InitJapanEarthquakeDB()
+	if err != nil {
+		return err
+	}
+	err = InitJapanEEWDB()
 	if err != nil {
 		return err
 	}

@@ -13,7 +13,7 @@ func runTask(taskFunc func(), interval time.Duration) {
 	defer ticker.Stop()
 
 	for {
-		taskFunc()
+		go taskFunc()
 		<-ticker.C
 	}
 }
