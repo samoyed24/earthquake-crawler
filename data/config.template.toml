@@ -1,0 +1,31 @@
+[httpRequest]
+timeout_second = 5                              # 爬虫的超时时间
+
+[params]
+timezone = 'Asia/Shanghai'                      # 时区
+
+[db]
+db_path = "data/earthquake.db"                  # SQLite数据库位置
+
+[redis]
+enable = false                                  # 是否连接Redis，项目没有解耦模块，默认不连接
+addr = "localhost"
+port = 6379
+password = ""
+db = 0
+
+[jpquake]
+enable = true
+crawl_interval = 60
+
+[jpeew]
+enable = true
+crawl_interval = 1
+redis_enable = false
+redis_key = "jpeew"
+
+[email]
+host = ""
+port = ""
+username = ""
+password = ""

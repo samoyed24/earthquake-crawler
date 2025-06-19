@@ -1,4 +1,4 @@
-package jpquakestorage
+package repo
 
 import (
 	"earthquake-crawler/internal/model"

@@ -1,13 +1,13 @@
 package task
 
 import (
-	"earthquake-crawler/internal/crawler/jpeewcrawler"
-	japanSpider "earthquake-crawler/internal/crawler/jpquakecrawler"
+	"earthquake-crawler/internal/config"
+	"earthquake-crawler/internal/crawler/crawler/jpeewcrawler"
+	"earthquake-crawler/internal/crawler/crawler/jpquakecrawler"
+	"earthquake-crawler/internal/crawler/parser/jpeewparser"
+	"earthquake-crawler/internal/crawler/parser/jpquakeparser"
 	"earthquake-crawler/internal/model"
-	"earthquake-crawler/internal/parser/jpeewparser"
-	japanParser "earthquake-crawler/internal/parser/jpquakeparser"
-	"earthquake-crawler/internal/storage/jpeewstorage"
-	japanStorage "earthquake-crawler/internal/storage/jpquakestorage"
+	"earthquake-crawler/internal/repo"
 	"earthquake-crawler/internal/util"
 	"fmt"
 
@@ -17,19 +17,19 @@ import (
 var lastEEWData = new(model.JapanEEWData)
 
 func JapanEarthquakeCrawlTask() {
-	eqListDoc, err := japanSpider.GetJapanEarthquakeListDoc()
+	eqListDoc, err := jpquakecrawler.GetJapanEarthquakeListDoc()
 	if err != nil {
 		logrus.Errorf("[日本地震信息]在获取地震信息列表的过程中失败: %v", err)
 		return
 	}
 
-	eqList, err := japanParser.ParseJapanEarthquakeListDoc(eqListDoc)
+	eqList, err := jpquakeparser.ParseJapanEarthquakeListDoc(eqListDoc)
 	if err != nil {
 		logrus.Errorf("[日本地震信息]在解析地震列表HTML的过程中失败: %v", err)
 		return
 	}
 
-	eqNotExist, err := japanStorage.GetJapanEarthquakeNotInDB(eqList)
+	eqNotExist, err := repo.GetJapanEarthquakeNotInDB(eqList)
 	if err != nil {
 		logrus.Errorf("[日本地震信息]在查询数据库选择需要获取详情的地震列表的过程中失败：%v", err)
 		return
@@ -40,17 +40,17 @@ func JapanEarthquakeCrawlTask() {
 	}
 
 	for _, eqTime := range eqNotExist {
-		doc, err := japanSpider.GetJapanEarthquakeDetailDoc(eqTime)
+		doc, err := jpquakecrawler.GetJapanEarthquakeDetailDoc(eqTime)
 		if err != nil {
 			logrus.Errorf("[日本地震信息]在尝试获取%v发生的地震的过程中出现错误: %v", eqTime, err)
 			continue
 		}
-		detail, err := japanParser.ParseJapanEarthquakeDetailDoc(eqTime, doc)
+		detail, err := jpquakeparser.ParseJapanEarthquakeDetailDoc(eqTime, doc)
 		if err != nil {
 			logrus.Errorf("[日本地震信息]在尝试解析%v发生的地震的过程中出现错误: %v", eqTime, err)
 			continue
 		}
-		err = japanStorage.AddNewJapanEarthquake(detail)
+		err = repo.AddNewJapanEarthquake(detail)
 		if err != nil {
 			logrus.Errorf("[日本地震信息]在尝试添加%v发生的地震的过程中出现错误: %v", eqTime, err)
 			continue
@@ -87,7 +87,7 @@ func JapanEEWCrawlTask() {
 	if eewData == nil {
 		return
 	}
-	if eewData.ReportTime != lastEEWData.ReportTime {
+	if eewData.ReportTime != lastEEWData.ReportTime || eewData.IsCancel != lastEEWData.IsCancel {
 		logrus.Infof("[日本EEW]------------------------------------")
 		logrus.Infof("[日本EEW]紧急地震速报(%v) - 第%v报", eewData.AlertFlg, eewData.ReportNum)
 		if eewData.IsFinal {
@@ -106,7 +106,14 @@ func JapanEEWCrawlTask() {
 		logrus.Infof("[日本EEW]预计最大震度：%v", eewData.CalcIntensity)
 		logrus.Infof("[日本EEW]报告时间: %v", util.GetCurrentJapanTime().Format("2006-01-02T15:04:05-0700"))
 		logrus.Infof("[日本EEW]------------------------------------")
-		jpeewstorage.AddJapanEEWRecord(eewData)
+		if err := repo.AddJapanEEWRecord(eewData); err != nil {
+			logrus.Errorf("[日本EEW]在向SQLite数据库写入EEW信息的过程中发生错误: %v", err)
+		}
+		if config.Cfg.Redis.Enable {
+			if err := repo.RPushJapanEEWRecord(eewData); err != nil {
+				logrus.Errorf("[日本EEW]在向Redis写入EEW信息的过程中发生错误: %v", err)
+			}
+		}
 	}
 	lastEEWData = eewData
 }

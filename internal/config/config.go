@@ -12,22 +12,33 @@ type DBConfig struct {
 	DBPath string `toml:"db_path"`
 }
 
-type CrawlerSwitchConfig struct {
-	JapanEarthquakeCrawlerSwitch bool `toml:"japan_earthquake_crawler_switch"`
-	JapanEEWCrawlerSwitch        bool `toml:"japan_eew_crawler_switch"`
+type RedisConfig struct {
+	Enable   bool   `toml:"enable"`
+	Addr     string `toml:"addr"`
+	Port     int    `toml:"port"`
+	Password string `toml:"password"`
+	DB       int    `toml:"db"`
 }
 
-type CrawlerIntervalConfig struct {
-	JapanEarthquakeInterval int `toml:"japan_earthquake_interval"`
-	JapanEEWInterval        int `toml:"japan_eew_interval"`
+type JPQuakeConfig struct {
+	Enable        bool `toml:"enable"`
+	CrawlInterval int  `toml:"crawl_interval"`
+}
+
+type JPEEWConfig struct {
+	Enable        bool   `toml:"enable"`
+	CrawlInterval int    `toml:"crawl_interval"`
+	RedisEnable   bool   `toml:"redis_enable"`
+	RedisKey      string `toml:"redis_key"`
 }
 
 type Config struct {
-	HttpRequest     HttpRequestConfig     `toml:"httpRequest"`
-	Params          ParamsConfig          `toml:"params"`
-	DB              DBConfig              `toml:"db"`
-	CrawlerSwitch   CrawlerSwitchConfig   `toml:"crawlerSwitch"`
-	CrawlerInterval CrawlerIntervalConfig `toml:"crawlerInterval"`
+	HttpRequest HttpRequestConfig `toml:"httpRequest"`
+	Params      ParamsConfig      `toml:"params"`
+	Redis       RedisConfig       `toml:"redis"`
+	DB          DBConfig          `toml:"db"`
+	JPQuake     JPQuakeConfig     `toml:"jpquake"`
+	JPEEW       JPEEWConfig       `toml:"jpeew"`
 }
 
 var Cfg Config
