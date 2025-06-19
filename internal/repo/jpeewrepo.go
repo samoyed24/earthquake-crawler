@@ -1,6 +1,7 @@
-package jpeewstorage
+package repo
 
 import (
+	"earthquake-crawler/internal/config"
 	"earthquake-crawler/internal/model"
 	"earthquake-crawler/internal/storage"
 	"encoding/json"
@@ -22,4 +23,12 @@ func AddJapanEEWRecord(eewData *model.JapanEEWData) error {
 		return err
 	}
 	return nil
+}
+
+func RPushJapanEEWRecord(eewData *model.JapanEEWData) error {
+	jsonData, err := json.Marshal(eewData)
+	if err != nil {
+		return err
+	}
+	return storage.RPushRedis(config.Cfg.JPEEW.RedisKey, jsonData)
 }

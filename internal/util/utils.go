@@ -2,6 +2,8 @@ package util
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"strings"
 	"time"
 )
@@ -32,4 +34,26 @@ func ToBool(v interface{}) (bool, error) {
 	default:
 		return false, fmt.Errorf("unsupported type: %T", val)
 	}
+}
+
+func CopyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		cerr := out.Close()
+		if err == nil {
+			err = cerr
+		}
+	}()
+
+	_, err = io.Copy(out, in)
+	return err
 }
