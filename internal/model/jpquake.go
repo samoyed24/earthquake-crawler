@@ -16,7 +16,7 @@ type JapanEarthquakeDetail struct {
 	Center          string           `json:"center"`
 	MaxIntensity    *string          `json:"maxIntensity"`
 	Magnitude       *float64         `json:"magnitude"`
-	Depth           string           `json:"depth"`
+	Depth           *string          `json:"depth"`
 	Latitude        string           `json:"latitude"`
 	Longitude       string           `json:"longitude"`
 	Info            string           `json:"info"`

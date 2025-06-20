@@ -1,7 +1,7 @@
 package config
 
 import (
-	"earthquake-crawler/internal/util"
+	"embed"
 	"fmt"
 	"os"
 
@@ -9,8 +9,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+//go:embed config.template.toml
+var configTemplate embed.FS
+
 func LoadConfig() error {
-	template := "data/config.template.toml"
+	// template := "data/config.template.toml"
 	path := "data/config.toml"
 	f, err := os.Open(path)
 	if err != nil {
@@ -18,7 +21,12 @@ func LoadConfig() error {
 			return err
 		}
 		logrus.Info("未找到配置文件, 正在尝试创建新的配置文件")
-		err := util.CopyFile(template, path)
+		// err := util.CopyFile(template, path)
+		content, err := configTemplate.ReadFile("config.template.toml")
+		if err != nil {
+			return fmt.Errorf("无法读取配置模板: %v", err)
+		}
+		err = os.WriteFile(path, content, 0644)
 		if err != nil {
 			return fmt.Errorf("创建新的配置文件失败: %v", err)
 		}

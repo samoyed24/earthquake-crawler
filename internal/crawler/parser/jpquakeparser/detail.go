@@ -49,7 +49,12 @@ func getDetailFromDetailTable(tableSelection *goquery.Selection, detailStruct *m
 		mag = &magnitude
 	}
 	detailStruct.Magnitude = mag
-	detailStruct.Depth = strings.TrimSpace(trs.Eq(4).Find("td").Eq(1).Find("small").First().Text())
+	depth := strings.TrimSpace(trs.Eq(4).Find("td").Eq(1).Find("small").First().Text())
+	if depth == "---" {
+		detailStruct.Depth = nil
+	} else {
+		detailStruct.Depth = &depth
+	}
 
 	latitude, longitude, err := splitLatLon(trs.Eq(5).Find("td").Eq(1).Find("small").First().Text())
 

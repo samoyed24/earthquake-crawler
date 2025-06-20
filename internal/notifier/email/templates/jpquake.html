@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JPQuake Update</title>
+</head>
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0; padding:0;">
+  <tr>
+    <td style="width:100%;">
+      <!-- 容器 -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="background-color:#ea5e77; padding:20px; text-align: center; font-size:20px; color:#fff;">
+            日本地震情报更新
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px; font-size:16px; background-color: #3475cf; font-size: large; color: white">
+            <p>地震发生时间: {{.OccurTime}}</p>
+            <p>震中: {{.Center}}({{.Latitude}}/{{.Longitude}})</p>
+            <p>规模: {{if .Magnitude}}{{.Magnitude}}{{else}}未知{{end}}</p>
+            <p>最大震度: {{if .MaxIntensity}}{{.MaxIntensity}}{{else}}未知{{end}}</p>
+            <p>震源深度: {{if .Depth}}{{.Depth}}{{else}}未知{{end}}</p>
+            <p>地震相关信息: {{.Info}}</p>
+            <p>
+                {{range .LocationReports}}
+                <h3>{{.Intensity}}</h3>
+                <ul>
+                    {{range .Locations}}
+                    <li>
+                        <strong>{{.Prefecture}}</strong>：
+                        {{range .Subareas}}
+                        <span>{{.}}</span>
+                        {{end}}
+                    </li>
+                    {{end}}
+                </ul>
+                {{end}}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

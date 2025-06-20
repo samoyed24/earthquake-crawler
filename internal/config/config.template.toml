@@ -26,6 +26,15 @@ redis_key = "jpeew"
 
 [email]
 host = ""
-port = ""
+port = 465
 username = ""
 password = ""
+max_retries = 3
+[email.receive]
+receiver_username = ""
+[email.receive.jpquake]
+receive = true
+[email.receive.jpeew]
+receive = true
+receive_alert_only = false
+receive_train = true

@@ -7,6 +7,7 @@ import (
 	"earthquake-crawler/internal/crawler/parser/jpeewparser"
 	"earthquake-crawler/internal/crawler/parser/jpquakeparser"
 	"earthquake-crawler/internal/model"
+	"earthquake-crawler/internal/notifier/task"
 	"earthquake-crawler/internal/repo"
 	"earthquake-crawler/internal/util"
 	"fmt"
@@ -68,6 +69,11 @@ func JapanEarthquakeCrawlTask() {
 			intensityInfo = fmt.Sprintf("最大震度为%v", *detail.MaxIntensity)
 		}
 		logrus.Infof("[日本地震信息]新增一条于%v发生在%v的地震, %v%v", detail.OccurTime, detail.Center, magInfo, intensityInfo)
+		if config.Cfg.Email.Enable {
+			if config.Cfg.Email.EmailReceive.EmailReceiveJPQuake.Receive {
+				go task.SendJPQuakeEmail(detail)
+			}
+		}
 	}
 }
 
