@@ -21,8 +21,9 @@ type RedisConfig struct {
 }
 
 type JPQuakeConfig struct {
-	Enable        bool `toml:"enable"`
-	CrawlInterval int  `toml:"crawl_interval"`
+	Enable           bool `toml:"enable"`
+	CrawlInterval    int  `toml:"crawl_interval"`
+	ParseAfterMinute int  `toml:"parse_after_minute"`
 }
 
 type JPEEWConfig struct {
@@ -33,7 +34,8 @@ type JPEEWConfig struct {
 }
 
 type EmailReceiveJPQuakeConfig struct {
-	Receive bool `toml:"receive"`
+	Receive        bool `toml:"receive"`
+	MaxReceiveOnce int  `toml:"max_receive_once"`
 }
 
 type EmailReceiveJPEEWConfig struct {

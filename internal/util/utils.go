@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -12,6 +13,14 @@ func GetCurrentJapanTime() time.Time {
 	loc, _ := time.LoadLocation("Asia/Tokyo")
 	tokyoTime := time.Now().In(loc)
 	return tokyoTime
+}
+
+func GetTokyoLocation() *time.Location {
+	loc, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		log.Fatalf("无法使用时区信息: %v", err)
+	}
+	return loc
 }
 
 func ToBool(v interface{}) (bool, error) {

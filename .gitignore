@@ -3,3 +3,5 @@ build_and_push.sh
 main
 earthquake.db
 config.toml
+.vscode
+.idea

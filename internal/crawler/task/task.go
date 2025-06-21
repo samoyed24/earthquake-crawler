@@ -11,7 +11,6 @@ import (
 	"earthquake-crawler/internal/repo"
 	"earthquake-crawler/internal/util"
 	"fmt"
-
 	"github.com/sirupsen/logrus"
 )
 
@@ -69,10 +68,9 @@ func JapanEarthquakeCrawlTask() {
 			intensityInfo = fmt.Sprintf("最大震度为%v", *detail.MaxIntensity)
 		}
 		logrus.Infof("[日本地震信息]新增一条于%v发生在%v的地震, %v%v", detail.OccurTime, detail.Center, magInfo, intensityInfo)
-		if config.Cfg.Email.Enable {
-			if config.Cfg.Email.EmailReceive.EmailReceiveJPQuake.Receive {
-				go task.SendJPQuakeEmail(detail)
-			}
+		maxReceiveOnce := config.Cfg.Email.EmailReceive.EmailReceiveJPQuake.MaxReceiveOnce
+		if maxReceiveOnce <= 0 || len(eqNotExist) <= maxReceiveOnce {
+			go task.SendJPQuakeEmail(detail)
 		}
 	}
 }
@@ -120,6 +118,7 @@ func JapanEEWCrawlTask() {
 				logrus.Errorf("[日本EEW]在向Redis写入EEW信息的过程中发生错误: %v", err)
 			}
 		}
+		go task.SendJPEEWEmail(eewData)
 	}
 	lastEEWData = eewData
 }
