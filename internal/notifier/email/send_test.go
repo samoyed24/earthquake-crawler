@@ -16,6 +16,6 @@ func TestSendEmail(t *testing.T) {
 	config.Cfg.Email.EmailReceive.ReceiverUsers = []string{"example@example.com"}
 	err := SendEmail(config.Cfg.Email.EmailReceive.ReceiverUsers, "Test Email", "<h1>Hello World</h1>")
 	if err != nil {
-		t.Fatalf("邮件发送测试未通过: %v", err)
+		t.Fatalf("[测试]邮件发送测试未通过: %v", err)
 	}
 }

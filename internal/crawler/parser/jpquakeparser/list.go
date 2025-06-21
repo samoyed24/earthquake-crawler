@@ -1,7 +1,10 @@
 package jpquakeparser
 
 import (
+	"earthquake-crawler/internal/config"
+	"earthquake-crawler/internal/util"
 	"regexp"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -30,6 +33,15 @@ func ParseJapanEarthquakeListDoc(doc *goquery.Document) ([]string, error) {
 			earthquakeIndex = append(earthquakeIndex, match[1])
 		}
 	})
-	// fmt.Println(earthquakeIndex)
-	return earthquakeIndex, nil
+	var resEqtList []string
+	for _, eqt := range earthquakeIndex {
+		t, err := time.ParseInLocation("20060102150405", eqt, util.GetTokyoLocation())
+		if err != nil {
+			return nil, err
+		}
+		if util.GetCurrentJapanTime().Sub(t) >= time.Duration(config.Cfg.JPQuake.ParseAfterMinute)*time.Minute {
+			resEqtList = append(resEqtList, eqt)
+		}
+	}
+	return resEqtList, nil
 }

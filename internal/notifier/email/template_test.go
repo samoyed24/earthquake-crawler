@@ -68,3 +68,28 @@ func TestRenderJapanEarthquakeEmailTemplate(t *testing.T) {
 	}
 	t.Logf("[测试]生成邮件结果: %v", *resultHtml)
 }
+
+func TestRenderJapanEEWEmailTemplate(t *testing.T) {
+	magn := 7.6
+	data := model.JapanEEWData{
+		ReportTime:    "2024-01-01T16:10:10+0900",
+		RegionName:    "Ishikawa",
+		OriginTime:    "20240101161010",
+		ReportID:      "20240101161010",
+		IsCancel:      true,
+		IsTraining:    true,
+		IsFinal:       true,
+		Depth:         "10km",
+		Longitude:     1,
+		Latitude:      2,
+		CalcIntensity: "7",
+		Magnitude:     &magn,
+		ReportNum:     10,
+		AlertFlg:      "Keihou",
+	}
+	resultHtml, err := RenderJapanEEWEmailTemplate(&data)
+	if err != nil {
+		t.Errorf("[测试]在渲染JPEEW邮件的过程中发送错误: %v", err)
+	}
+	t.Logf("[测试]生成邮件结果: %v", *resultHtml)
+}

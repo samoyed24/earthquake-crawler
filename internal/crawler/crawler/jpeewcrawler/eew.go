@@ -13,7 +13,7 @@ import (
 func GetJapanEEW(queryTime string) (*model.RawJapanEEWData, error) {
 	// 这里需要保证下个请求开始前上一个请求一定结束，如果没有结束就放弃。
 	// 建议不要把配置文件中的超时秒数设得太小（默认1s），不然会永远都拿不到数据。
-	eewTimeout := time.Duration(min(config.Cfg.HttpRequest.TimeoutSeconds))
+	eewTimeout := time.Duration(min(config.Cfg.HttpRequest.TimeoutSeconds, config.Cfg.JPEEW.CrawlInterval))
 	client := &http.Client{
 		Timeout: eewTimeout * time.Second,
 	}

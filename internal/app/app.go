@@ -26,7 +26,7 @@ func RunApp() error {
 	}
 	if config.Cfg.JPEEW.Enable {
 		logrus.Infof("[日本EEW]已添加爬虫任务，间隔%v秒执行", config.Cfg.JPEEW.CrawlInterval)
-		go runTask(task.JapanEEWCrawlTask, time.Duration(config.Cfg.JPQuake.CrawlInterval)*time.Second)
+		go runTask(task.JapanEEWCrawlTask, time.Duration(config.Cfg.JPEEW.CrawlInterval)*time.Second)
 	}
 	select {}
 }
