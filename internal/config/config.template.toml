@@ -31,6 +31,7 @@ host = ""                                       # SMTP服务器地址
 port = 465                                      # SMTP服务器端口
 username = ""                                   # 用户名（一般就是邮箱地址）
 password = ""                                   # 密码（有的是账户密码，有的是token，看文档）
+alias = "quakebot"                              # 邮件发送者的alias
 max_retries = 3                                 # 一封邮件最多尝试重发几次
 [email.receive]
 receiver_users = []                             # 接收邮件的账户，如有多个按字符串数组形式写入
@@ -45,5 +46,15 @@ receive_train = true                            # 推送训练用EEW吗？
 [telegram]                                      # TG机器人推送设置，同样建议参考官方文档
 enable = true                                   # telegram机器人推送总开关
 bot_token = ""                                  # 生成的bot token
+max_retries = 3                                 # 最大尝试次数
+max_send_once_a_time = 3                        # 最大限制并发发送信息数
+max_receive_once = 3                            # 同上(邮件部分)
 [telegram.receive]
-receive_users = []                              # 接收推送的用户telegram id
+receive_users = []                              # 接收推送的用户telegram id（整数格式， int64)
+[telegram.receive.jpquake]
+receive = true                                  # 同邮件
+max_receive_once = 3                            # 同邮件
+[telegram.receive.jpeew]
+receive = true                                  # 同邮件
+receive_alert_only = false                      # 同邮件
+receive_train = true                            # 同邮件

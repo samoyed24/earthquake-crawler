@@ -12,7 +12,7 @@
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <td style="background-color:#ea5e77; padding:20px; text-align: center; font-size:20px; color:#fff;">
-                        紧急地震速报
+                        紧急地震速报({{.AlertFlg}})
                     </td>
                 </tr>
                 <tr>
@@ -21,11 +21,11 @@
                         {{if .IsCancel}}<p style="color: lime">**紧急地震速报已取消**</p>{{end}}
                         {{if .IsTraining}}<p style="color: lime">**训练用**</p>{{end}}
                         <p>第{{.ReportNum}}报</p>
-                        <p>速报类型: {{.AlertFlg}}</p>
                         <p>推测震中: {{.RegionName}}({{.Latitude}}/{{.Longitude}})</p>
                         <p>推测最大震度: {{.CalcIntensity}}</p>
                         <p>推测规模: {{.Magnitude}}</p>
                         <p>推测震源深度: {{.Depth}}</p>
+                        <p>地震发生时间：{{.OriginTime}}</p>
                     </td>
                 </tr>
             </table>
