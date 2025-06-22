@@ -71,6 +71,7 @@ func JapanEarthquakeCrawlTask() {
 		maxReceiveOnce := config.Cfg.Email.EmailReceive.EmailReceiveJPQuake.MaxReceiveOnce
 		if maxReceiveOnce <= 0 || len(eqNotExist) <= maxReceiveOnce {
 			go task.SendJPQuakeEmail(detail)
+			go task.SendJPQuakeTG(detail)
 		}
 	}
 }
@@ -119,6 +120,7 @@ func JapanEEWCrawlTask() {
 			}
 		}
 		go task.SendJPEEWEmail(eewData)
+		go task.SendJPEEWTG(eewData)
 	}
 	lastEEWData = eewData
 }
