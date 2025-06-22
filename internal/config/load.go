@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 	"github.com/sirupsen/logrus"
@@ -15,6 +16,8 @@ var configTemplate embed.FS
 func LoadConfig() error {
 	// template := "data/config.template.toml"
 	path := "data/config.toml"
+	dir := filepath.Dir(path)
+	err := os.MkdirAll(dir, 0755)
 	f, err := os.Open(path)
 	if err != nil {
 		if !os.IsNotExist(err) {

@@ -5,3 +5,6 @@ earthquake.db
 config.toml
 .vscode
 .idea
+build-and-push.sh
+releases
+build-release.sh
