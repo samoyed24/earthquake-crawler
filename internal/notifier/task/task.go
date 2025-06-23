@@ -73,6 +73,7 @@ func SendJPQuakeTG(data *model.JapanEarthquakeDetail) {
 	err = telegram.SendTelegramMessage(content, config.Cfg.Telegram.Receive.ReceiverUsers)
 	if err != nil {
 		logrus.Errorf("[Notifier-Telegram]在发送日本地震信息Telegram信息的过程中发生错误: %v", err)
+		return
 	}
 	logrus.Info("[Notifier-Telegram]Telegram信息发送成功")
 }
